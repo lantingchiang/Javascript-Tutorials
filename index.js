@@ -17,8 +17,11 @@ app.get('/', (req, res) => res.send('Hello World!'));
 function handleIndexRequest(req, res) {
     //res.send("Hello world!");
 
+    const name = req.query.name || 'Robert Langdon';
     //pass name of template to use to render; render checks in "views" directory
-    res.render('home');//can append extension or not
+    //can append file extension or not
+    //passing context: when key is same as variable name, can shorten to this
+    res.render('home', { name });
 }
 
 app.get('/', handleIndexRequest);
