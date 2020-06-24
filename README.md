@@ -6,4 +6,8 @@ Npm introduction: https://nodesource.com/blog/an-absolute-beginners-guide-to-usi
 # Things used
 1. Express: Node.js web app framework
 2. npm: Node package manager
-3. EJS: embedded javascript templating -- generates HTML with Javascript
+3. EJS: embedded javascript templating -- generates HTML with Javascript (templating engine)
+
+# Concepts
+Model, View, Controller architecture:
+- controller = function passed into routes
