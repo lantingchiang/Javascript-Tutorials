@@ -7,8 +7,18 @@
 </head>
 
 <Body>
-    <h1>Template is working :)</h1>
-    <h1>The query parameter is name = <%= name%> </h1>
+    <ul>
+        <!--forEach entry "crypto" in the array "cryptoData", apply the function that creates a list item-->
+        <% cryptoData.forEach(function(crypto) { %>
+        <li> <%= crypto.code %> - <%= crypto.name %> :
+            <% if (crypto.is_crypto) { %>
+            O
+            <% } else { %>
+            X
+            <% } %>
+        </li>
+        <% }); %>
+    </ul>
 </Body>
 
 </html>

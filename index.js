@@ -16,7 +16,7 @@ app.get('/', (req, res) => res.send('Hello World!'));
 //anonymous function: defined & called at same time
 */
 
-
+/*
 function handleIndexRequest(req, res) {
     //res.send("Hello world!");
 
@@ -27,8 +27,10 @@ function handleIndexRequest(req, res) {
     res.render('home', { name });
 }
 
-//app.get('/', handleIndexRequest);
+app.get('/', handleIndexRequest);
+*/
 
+/* Version 1
 app.get('/', (req, res) => {
     const code = req.query.code;
     //makes a GET request to url and returns a Promise
@@ -43,6 +45,29 @@ app.get('/', (req, res) => {
             res.render('home', { cryptoData });
         })
         .catch(err => console.log(error))
+});*/
+
+//REFACTOR: each function is responsible for one thing
+function getCryptos(code) {
+    return fetch('https://api.nexchange.io/en/api/v1/currency/')
+        .then(cryptoData => cryptoData.json())
+        .then(cryptoData => {
+            //cryptoData is an array of dicts
+            return code ? cryptoData.filter(crypto => crypto.code == code) : cryptoData;
+        })
+        .catch(err => console.log(err));
+
+}
+
+app.get('/', (req, res) => {
+    const code = req.query.code;
+
+    getCryptos(code)
+        .then(cryptoData => {
+            console.log(cryptoData);
+            res.render('home', { cryptoData });
+        })
+        .catch(err => console.log(err))
 });
 
 //listens for requests on this port
