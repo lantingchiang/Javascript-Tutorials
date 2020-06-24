@@ -4,6 +4,8 @@ const express = require('express');
 const app = express(); //express exports package as function
 const port = 3000
 
+var fetch = require('node-fetch');
+
 //assigns name 'view engine' to value 'ejs'
 app.set('view engine', 'ejs')
 
@@ -13,6 +15,7 @@ app.set('view engine', 'ejs')
 app.get('/', (req, res) => res.send('Hello World!'));
 //anonymous function: defined & called at same time
 */
+
 
 function handleIndexRequest(req, res) {
     //res.send("Hello world!");
@@ -24,7 +27,23 @@ function handleIndexRequest(req, res) {
     res.render('home', { name });
 }
 
-app.get('/', handleIndexRequest);
+//app.get('/', handleIndexRequest);
+
+app.get('/', (req, res) => {
+    const code = req.query.code;
+    //makes a GET request to url and returns a Promise
+    fetch('https://api.nexchange.io/en/api/v1/currency/') //name the data acquired as "cryptoData"
+        .then(cryptoData => cryptoData.json()) //callback function
+        .then(cryptoData => {
+            //if code exists, return data filtered by code. crypto is of type dict, with code being a field
+            return code ? cryptoData.filter(crypto => crypto.code == code) : cryptoData;
+        })
+        .then(cryptoData => {
+            //Need to make sure response isn't sent until data is acquired, so put it in callback
+            res.render('home', { cryptoData });
+        })
+        .catch(err => console.log(error))
+});
 
 //listens for requests on this port
 app.listen(port, () => {
